@@ -6,6 +6,10 @@
 <h2>{{ event.day }}</h2>
 <h2>{{ event.room }}</h2>
 <h2>{{ event_time }}</h2>
+<h2>categories</h2>
+{% for category in event.categories %}
+<h3>{{category}}</h3>
+{% endfor %}
 
 <div>
   <ul>
