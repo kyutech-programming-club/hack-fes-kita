@@ -1,6 +1,5 @@
 from flask import request, redirect, url_for, render_template, flash, abort, jsonify
-from flaskr import app, db
-from flaskr.read_csv import get_empty_room_num
+from flaskr import app, db, data
 from flaskr.models import Event, Entry
 
 #@app.route('/')
@@ -75,5 +74,8 @@ def event_delete(event_id):
 
 @app.route('/calendar')
 def calendar():
-    data = get_empty_room_num("./occupied_room.csv")
-    return render_template('calendar.html', data=data)
+    empty_rooms = data.get_empty_rooms()
+    for day, schedule in empty_rooms.items():
+        for time in range(len(schedule)):
+            empty_rooms[day][time] = len(schedule[time])
+    return render_template('calendar.html', data=empty_rooms)
