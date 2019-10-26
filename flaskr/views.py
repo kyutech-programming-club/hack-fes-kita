@@ -31,7 +31,7 @@ def calendar():
 def event_create():
     day=request.args.get('day')
     room=request.args.get('room')
-    time=int(request.args.get('time'))
+    time=int(request.args.get('time'))# + 1
     if request.method == 'POST':
         event = Event(title=request.form['title'],
                       description=request.form['description'],
@@ -52,7 +52,8 @@ def event_list():
 @app.route('/events/<int:event_id>/')
 def event_detail(event_id):
     event = Event.query.get(event_id)
-    return render_template('event/detail.html', event=event)
+    event_time = str(int(event.time) + 1)
+    return render_template('event/detail.html', event=event, event_time=event_time)
 
 @app.route('/events/<int:event_id>/edit/', methods=['GET', 'POST'])
 def event_edit(event_id):
@@ -84,8 +85,9 @@ def event_delete(event_id):
 @app.route("/plan")
 def show_plan():
     day, time = request.args.get('day'), int(request.args.get('time'))
+    room = request.args.get('room')
     empty_rooms = data.get_empty_rooms()
     empty_rooms = empty_rooms[day][time]
     events = data.get_event_rooms()
     events = events[day][time]
-    return render_template('plan.html', empty_rooms=empty_rooms, events=events, rooms=rooms, day=day, time=time)
+    return render_template('plan.html', empty_rooms=empty_rooms, events=events, room=room, day=day, time=time)
