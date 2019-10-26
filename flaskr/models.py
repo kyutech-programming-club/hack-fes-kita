@@ -10,6 +10,10 @@ category_post_association = Table('category_post_association', db.Model.metadata
         Column('category_id', Integer, ForeignKey('categories.id')),
         Column('post_id', Integer, ForeignKey('posts.id'))
 )
+category_event_association = Table('category_event_association', db.Model.metadata,
+        Column('category_id', Integer, ForeignKey('categories.id')),
+        Column('event_id', Integer, ForeignKey('events.id'))
+)
 
 class Event(db.Model):
     __tablename__ = 'events'
@@ -20,6 +24,7 @@ class Event(db.Model):
     day = db.Column(db.String(100), default='', nullable=False)
     room = db.Column(db.String(100), default='', nullable=False)
     time = db.Column(db.String(100), default='', nullable=False)
+    categories = relationship("Category", secondary=category_event_association, back_populates="events")
     #  email = db.Column(db.String(100), unique=True, nullable=False)
     #  _password = db.Column('password', db.String(100), nullable=False)
 
@@ -66,6 +71,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
     posts = relationship("Post", secondary=category_post_association, back_populates="categories")
+    events = relationship("Event", secondary=category_event_association, back_populates="categories")
 
     def __repr__(self):
         return '<Entry id={id} name={name!r}>'.format(
