@@ -121,7 +121,8 @@ def user_list():
 @app.route('/users/<int:user_id>/')
 @login_required
 def user_detail(user_id):
-    return 'detail user ' + str(user_id)
+    user = User.query.filter(User.id == user_id).first()
+    return render_template('user/detail.html', user=user)
 
 @app.route('/users/<int:user_id>/edit/', methods=['GET', 'POST'])
 @login_required
