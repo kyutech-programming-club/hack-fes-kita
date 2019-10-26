@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <h2>{{ 'Edit Post' if post else 'Add Post'}}</h2>
+  <form action="" method="post">
+    <dl>
+      <dt>Title:
+      <dd><input type=text size=20 name=title value="{{ post.title if post }}">
+      <dt>Body:
+      <dd><input type=text size=20 name=body value="{{ post.body if post }}">
+    　<dt>Category:
+          {% for category in categories %}
+          <dd><input type=checkbox size=20 name="categories" value="{{ category.name }}">{{ category.name }}</dd>
+          {% endfor %}
+      <dd><input type=submit value={{ 'save' if post else 'create' }}>
+    </dl>
+  </form>
+{% endblock %}
