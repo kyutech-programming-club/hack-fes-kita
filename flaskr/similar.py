@@ -3,6 +3,8 @@ warnings.simplefilter('ignore')
 from janome.tokenizer import Tokenizer
 from gensim.models import KeyedVectors
 
+j_t = Tokenizer()
+
 #load_model
 model_dir = './entity_vector.model.bin'
 model = KeyedVectors.load_word2vec_format(model_dir, binary=True)

@@ -140,14 +140,14 @@ def user_create():
         return redirect(url_for('user_list'))
     return render_template('user/new.html')
 
-#  from flaskr.similar import similar_word
+from flaskr.similar import similar_word
 
 @app.route('/select_candidates', methods=['POST'])
 def select_candidates():
     name = request.form['name']
     purpose = request.form['purpose']
-    #  candidates = similar_word(purpose)
-    candidates = ["soccer", "AHI", "C"]
+    candidates = similar_word(purpose)
+    print("candidates: ", candidates)
     categories = []
     for category_name in candidates:
         category = Category.query.filter(Category.name == category_name).first()
