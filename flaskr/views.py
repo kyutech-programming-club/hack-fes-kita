@@ -220,7 +220,8 @@ def post_edit(post_id):
     if request.method == 'POST':
         post.title=request.form['title']
         post.body=request.form['body']
-        post.categories=requiest.form['categories']
+        categories = [Category.query.filter(Category.name == category).first() for category in request.form["categories"]]
+        post.categories=categories
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('post_detail', post_id=post_id))
