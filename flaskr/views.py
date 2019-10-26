@@ -51,9 +51,7 @@ def event_create():
     time=int(request.args.get('time'))
     if request.method == 'POST':
         category = request.form["category"]
-        print(category)
         category = Category.query.filter(Category.name == category).first()
-        print("Category is", category)
         event = Event(title=request.form['title'],
                       description=request.form['description'],
                       day=day,
@@ -72,10 +70,12 @@ def event_list():
     return render_template('event/list.html', events=events)
 
 @app.route('/events/<int:event_id>/')
-def event_detail(event_id):
+def event_detail(event_id, joined=False):
     event = Event.query.get(event_id)
+    user_id = session.get('user_id')
+    joined = User.query.get(user_id) in event.users
     event_time = str(int(event.time) + 1)
-    return render_template('event/detail.html', event=event, event_time=event_time)
+    return render_template('event/detail.html', event=event, event_time=event_time, joined=joined)
 
 @app.route('/events/<int:event_id>/edit/', methods=['GET', 'POST'])
 def event_edit(event_id):
@@ -123,7 +123,8 @@ def user_list():
 @app.route('/users/<int:user_id>/')
 @login_required
 def user_detail(user_id):
-    return 'detail user ' + str(user_id)
+    user = User.query.filter(User.id == user_id).first()
+    return render_template('user/detail.html', user=user)
 
 @app.route('/users/<int:user_id>/edit/', methods=['GET', 'POST'])
 @login_required
@@ -133,6 +134,9 @@ def user_edit(user_id):
         abort(404)
     if request.method == 'POST':
         user.name=request.form['name']
+        category = request.form["category"]
+        category = Category.query.filter(Category.name == category).first()
+        user.categories.append(category)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('user_detail', user_id=user_id))
@@ -143,6 +147,9 @@ def user_edit(user_id):
 def user_create():
     if request.method == 'POST':
         user = User(name=request.form['name'])
+        category = request.form["category"]
+        category = Category.query.filter(Category.name == category).first()
+        user.categories.append(category)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('user_list'))
@@ -177,3 +184,14 @@ def logout():
     session.pop('user_id', None)
     flash('You were logged out')
     return redirect(url_for('login'))
+
+@app.route('/event/<int:event_id>/join')
+@login_required
+def join_event(event_id):
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+    event = Event.query.get(event_id)
+    user.events.append(event)
+    db.session.add(user)
+    db.session.commit()
+    return redirect(url_for('event_detail', event_id=event_id))
