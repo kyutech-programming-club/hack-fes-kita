@@ -42,7 +42,6 @@ class RoomData(object):
             'Thu': copy.deepcopy(init_value),
             'Fri': copy.deepcopy(init_value)}
         events = Event.query.all()
-        print("Events", events)
         for event in events:
             result_data[event.day][int(event.time)].append(event)
             print(result_data)
@@ -56,12 +55,17 @@ class RoomData(object):
             'Wed': [],
             'Thu': [],
             'Fri': []}
-        print(result_data)
+
         for day, schedule in self.class_rooms.items():
             for time in range(len(schedule)):
                 empy_rooms = list(set(self.all_rooms) - set(schedule[time]))
-                print(empy_rooms)
                 result_data[day].append(empy_rooms)
+
+        self.event_rooms = self.get_event_rooms()
+        for day, schedule in self.event_rooms.items():
+            for time in range(len(schedule)):
+                used_rooms = [event.room for event in self.event_rooms[day][time]]
+                result_data[day][time] = list(set(result_data[day][time]) - set(used_rooms))
 
         return result_data
 
