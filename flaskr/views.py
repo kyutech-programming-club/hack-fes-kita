@@ -1,24 +1,7 @@
 from functools import wraps
 from flask import request, redirect, url_for, render_template, flash, abort, jsonify, session, g
 from flaskr import app, db, data
-from flaskr.models import Event, Entry, User, Category
-
-
-#@app.route('/')
-#def show_entries():
-#    entries = Entry.query.order_by(Entry.id.desc()).all()
-#    return render_template('show_entries.html', entries=entries)
-
-#@app.route('/add', methods=['POST'])
-#def add_entry():
-#    entry = Entry(
-#            title=request.form['title'],
-#            text=request.form['text']
-#            )
-#    db.session.add(entry)
-#    db.session.commit()
-#    flash('New entry was successfully posted')
-#    return redirect(url_for('show_entries'))
+from flaskr.models import Event, Entry, User, Category, Post
 
 def login_required(f):
     @wraps(f)
@@ -195,3 +178,62 @@ def join_event(event_id):
     db.session.add(user)
     db.session.commit()
     return redirect(url_for('event_detail', event_id=event_id))
+
+@app.route('/posts/create/', methods=['GET', 'POST'])
+def post_create():
+    if request.method == 'POST':
+        title = request.form["title"]
+        body = request.form["body"]
+        categories = request.form.getlist("categories")
+        category_data = []
+        for category in categories:
+            tmp = Category.query.filter(Category.name == category).first()
+            category_data.append(tmp)
+        print(category_data)
+        post = Post(title=title,
+                    body=body
+        )
+        for category in category_data:
+            post.categories.append(category)
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('post_list'))
+    categories = Category.query.all()
+    return render_template('post/edit.html', categories=categories)
+
+@app.route('/posts/')
+def post_list():
+    posts = Post.query.all()
+    print(posts[0].title)
+    return render_template('post/list.html', posts=posts)
+
+@app.route('/posts/<int:post_id>/')
+def post_detail(post_id):
+    post = Post.query.get(post_id)
+    return render_template('post/detail.html', post=post)
+
+@app.route('/posts/<int:post_id>/edit/', methods=['GET', 'POST'])
+def post_edit(post_id):
+    post = Post.query.get(post_id)
+    if post is None:
+        abort(404)
+    if request.method == 'POST':
+        post.title=request.form['title']
+        post.body=request.form['body']
+        post.categories=requiest.form['categories']
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('post_detail', post_id=post_id))
+    return render_template('post/edit.html', post=post)
+
+@app.route('/posts/<int:post_id>/delete/', methods=['DELETE'])
+def post_delete(post_id):
+    post = Post.query.get(post_id)
+    if post is None:
+        response = jsonify({'status': 'Not Found'})
+        response.status_code = 404
+        return response
+    db.session.delete(event)
+    db.session.commit()
+    return jsonify({'status': 'OK'})
+
