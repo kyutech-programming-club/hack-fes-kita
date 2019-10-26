@@ -51,9 +51,7 @@ def event_create():
     time=int(request.args.get('time'))
     if request.method == 'POST':
         category = request.form["category"]
-        print(category)
         category = Category.query.filter(Category.name == category).first()
-        print("Category is", category)
         event = Event(title=request.form['title'],
                       description=request.form['description'],
                       day=day,
@@ -133,6 +131,9 @@ def user_edit(user_id):
         abort(404)
     if request.method == 'POST':
         user.name=request.form['name']
+        category = request.form["category"]
+        category = Category.query.filter(Category.name == category).first()
+        user.categories.append(category)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('user_detail', user_id=user_id))
@@ -143,6 +144,9 @@ def user_edit(user_id):
 def user_create():
     if request.method == 'POST':
         user = User(name=request.form['name'])
+        category = request.form["category"]
+        category = Category.query.filter(Category.name == category).first()
+        user.categories.append(category)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('user_list'))
