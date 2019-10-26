@@ -1,8 +1,15 @@
-from sqlalchemy.orm import synonym
+from sqlalchemy import Table, Column, Integer, ForeignKey
+from sqlalchemy.orm import synonym, relationship
 from werkzeug import check_password_hash, generate_password_hash
+from sqlalchemy.ext.declarative import declarative_base
+
 
 from flaskr import db
 
+category_post_association = Table('category_post_association', db.Model.metadata,
+        Column('category_id', Integer, ForeignKey('categories.id')),
+        Column('post_id', Integer, ForeignKey('posts.id'))
+)
 
 class Event(db.Model):
     __tablename__ = 'events'
@@ -52,6 +59,30 @@ class Entry(db.Model):
     def __repr__(self):
         return '<Entry id={id} title={title!r}>'.format(
                 id=self.id, title=self.title)
+
+
+class Category(db.Model):
+    __tablename__ = 'categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text)
+    posts = relationship("Post", secondary=category_post_association, back_populates="categories")
+
+    def __repr__(self):
+        return '<Entry id={id} name={name!r}>'.format(
+                id=self.id, name=self.name)
+
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text)
+    body = db.Column(db.Text)
+    categories = relationship("Category", secondary=category_post_association, back_populates="posts")
+
+    def __repr__(self):
+        return '<Entry id={id} title={title!r}>'.format(
+                id=self.id, title=self.title)
+
 
 def init():
     db.create_all() 
