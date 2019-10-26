@@ -8,10 +8,11 @@ model_dir = './entity_vector.model.bin'
 model = KeyedVectors.load_word2vec_format(model_dir, binary=True)
 
 #search_similar_word
-j_t = Tokenizer()
 def similar_word(text):
   tokens =j_t.tokenize(text)
   result = ''
+  naoya = []
+
   for token in tokens:
       # 品詞を取り出し
       partOfSpeech = token.part_of_speech.split(',')[0]
@@ -19,10 +20,13 @@ def similar_word(text):
           result += token.surface
       else: 
         try:
-          print(result)
-          print(model.most_similar('['+result+']'))
+          for i in range(3):
+            res = model.most_similar('['+result+']')[i]
+            res1 = res[0].split(',')[0]
+            naoya.append(res1)
+          
+                  
           result = ''
         except KeyError as error:
           result = ''
-text = 'C言語の勉強会をします'
-similar_word(text)
+  return naoya
