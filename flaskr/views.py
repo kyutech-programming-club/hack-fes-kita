@@ -85,5 +85,7 @@ def event_delete(event_id):
 def show_plan():
     day, time = request.args.get('day'), int(request.args.get('time'))
     empty_rooms = data.get_empty_rooms()
-    rooms = empty_rooms[day][time]
-    return render_template('plan.html', rooms=rooms, day=day, time=time)
+    empty_rooms = empty_rooms[day][time]
+    events = data.get_event_rooms()
+    events = events[day][time]
+    return render_template('plan.html', empty_rooms=empty_rooms, events=events, rooms=rooms, day=day, time=time)
