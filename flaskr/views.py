@@ -17,3 +17,14 @@ def add_entry():
     db.session.commit()
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
+
+@app.route('/calendar')
+def calendar():
+    data = {"月": [2, 2, 2, 2, 2],
+            "火": [3, 6, 7, 9, 12],
+            "水": [9, 6, 1, 2, 4],
+            "木": [4, 8, 2, 5, 10],
+            "金": [1, 5, 4, 2, 3],            
+    }
+    return render_template('calendar.html', data=data
+)
