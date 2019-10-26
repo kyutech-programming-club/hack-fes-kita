@@ -1,7 +1,8 @@
 from functools import wraps
 from flask import request, redirect, url_for, render_template, flash, abort, jsonify, session, g
 from flaskr import app, db, data
-from flaskr.models import Event, Entry, User
+from flaskr.models import Event, Entry, User, Category
+
 
 #@app.route('/')
 #def show_entries():
@@ -49,12 +50,17 @@ def event_create():
     room=request.args.get('room')
     time=int(request.args.get('time'))
     if request.method == 'POST':
+        category = request.form["category"]
+        print(category)
+        category = Category.query.filter(Category.name == category).first()
+        print("Category is", category)
         event = Event(title=request.form['title'],
                       description=request.form['description'],
                       day=day,
                       room=room,
                       time=time
         )
+        event.categories.append(category)
         db.session.add(event)
         db.session.commit()
         return redirect(url_for('event_list'))
