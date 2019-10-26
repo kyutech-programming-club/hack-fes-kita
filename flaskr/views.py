@@ -70,10 +70,12 @@ def event_list():
     return render_template('event/list.html', events=events)
 
 @app.route('/events/<int:event_id>/')
-def event_detail(event_id):
+def event_detail(event_id, joined=False):
     event = Event.query.get(event_id)
+    user_id = session.get('user_id')
+    joined = User.query.get(user_id) in event.users
     event_time = str(int(event.time) + 1)
-    return render_template('event/detail.html', event=event, event_time=event_time)
+    return render_template('event/detail.html', event=event, event_time=event_time, joined=joined)
 
 @app.route('/events/<int:event_id>/edit/', methods=['GET', 'POST'])
 def event_edit(event_id):
@@ -182,3 +184,14 @@ def logout():
     session.pop('user_id', None)
     flash('You were logged out')
     return redirect(url_for('login'))
+
+@app.route('/event/<int:event_id>/join')
+@login_required
+def join_event(event_id):
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+    event = Event.query.get(event_id)
+    user.events.append(event)
+    db.session.add(user)
+    db.session.commit()
+    return redirect(url_for('event_detail', event_id=event_id))

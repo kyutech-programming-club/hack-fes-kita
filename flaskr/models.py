@@ -18,6 +18,10 @@ category_user_association = Table('category_user_association', db.Model.metadata
         Column('category_id', Integer, ForeignKey('categories.id')),
         Column('user_id', Integer, ForeignKey('users.id'))
 )
+event_user_association = Table('event_user_association', db.Model.metadata,
+        Column('event_id', Integer, ForeignKey('events.id')),
+        Column('user_id', Integer, ForeignKey('users.id'))
+)
 
 class Event(db.Model):
     __tablename__ = 'events'
@@ -29,6 +33,7 @@ class Event(db.Model):
     room = db.Column(db.String(100), default='', nullable=False)
     time = db.Column(db.String(100), default='', nullable=False)
     categories = relationship("Category", secondary=category_event_association, back_populates="events")
+    users = relationship("User", secondary=event_user_association, back_populates="events")
     #  email = db.Column(db.String(100), unique=True, nullable=False)
     #  _password = db.Column('password', db.String(100), nullable=False)
 
@@ -64,6 +69,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), default='', nullable=False)
     categories = relationship("Category", secondary=category_user_association, back_populates="users")
+    events = relationship("Event", secondary=event_user_association, back_populates="users")
 
     @classmethod
     def authenticate(cls, query, name):

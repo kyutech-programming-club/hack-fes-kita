@@ -10,7 +10,8 @@
 {% for category in event.categories %}
 <h3>{{category}}</h3>
 {% endfor %}
-
+Joined ? {{ joined }}<br>
+<a href="{{ url_for('join_event', event_id=event.id) }}">join</a>
 <div>
   <ul>
     <li><a href="{{ url_for('event_edit', event_id=event.id) }}">edit</a></li>
