@@ -132,8 +132,9 @@ def user_create():
         user = User(name=request.form['name'])
         categories = request.form.getlist("categories")
         print(categories)
-        category = Category.query.filter(Category.name == category).first()
-        user.categories.append(category)
+        for category_name in categories:
+            category = Category.query.filter(Category.name == category_name).first()
+            user.categories.append(category)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('user_list'))
@@ -146,8 +147,13 @@ def select_candidates():
     name = request.form['name']
     purpose = request.form['purpose']
     #  candidates = similar_word(purpose)
-    candidates = ["A", "B", "C"]
-    return render_template('user/edit.html', categories=candidates)
+    candidates = ["soccer", "AHI", "C"]
+    categories = []
+    for category_name in candidates:
+        category = Category.query.filter(Category.name == category_name).first()
+        if category != None:
+            categories.append(category)
+    return render_template('user/edit.html', name=name, categories=categories)
     
 
 @app.route('/users/<int:user_id>/delete/', methods=['DELETE'])
