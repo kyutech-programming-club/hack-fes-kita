@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <h2>{{ 'Edit Category' if category else 'Add Category'}}</h2>
+  <form action="" method="post">
+    <dl>
+      <dt>Name:
+      <dd><input type=text size=20 name=name value="{{ category.name if category }}">
+      <dd><input type=submit value={{ 'save' if category else 'create' }}>
+    </dl>
+  </form>
+{% endblock %}
