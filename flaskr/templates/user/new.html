@@ -2,14 +2,12 @@
 
 {% block body %}
   <h2>{{ 'Edit User' if user else 'Add User'}}</h2>
-  <form action="{{url_for('user_create')}}" method="post">
+  <form action="{{url_for('select_candidates')}}" method="post">
     <dl>
       <dt>Name:
       <dd><input type=text size=20 name=name value="{{ user.name if user }}">
-    　<dt>Category:
-          {% for category in categories %}
-          <dd><input type=checkbox size=20 name="categories" value="{{ category.name }}">{{ category.name }}</dd>
-          {% endfor %}
+      <dt>Purpose
+      <dd><textarea name=purpose>
       <dd><input type=submit value={{ 'save' if user else 'create' }}>
     </dl>
   </form>

@@ -130,13 +130,25 @@ def user_edit(user_id):
 def user_create():
     if request.method == 'POST':
         user = User(name=request.form['name'])
-        category = request.form["category"]
+        categories = request.form.getlist("categories")
+        print(categories)
         category = Category.query.filter(Category.name == category).first()
         user.categories.append(category)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('user_list'))
-    return render_template('user/edit.html')
+    return render_template('user/new.html')
+
+#  from flaskr.similar import similar_word
+
+@app.route('/select_candidates', methods=['POST'])
+def select_candidates():
+    name = request.form['name']
+    purpose = request.form['purpose']
+    #  candidates = similar_word(purpose)
+    candidates = ["A", "B", "C"]
+    return render_template('user/edit.html', categories=candidates)
+    
 
 @app.route('/users/<int:user_id>/delete/', methods=['DELETE'])
 def user_delete(user_id):
