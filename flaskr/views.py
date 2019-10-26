@@ -1,6 +1,6 @@
-from flask import request, redirect, url_for, render_template, flash, abort, jsonify
+from flask import request, redirect, url_for, render_template, flash, abort, jsonify, session
 from flaskr import app, db, data
-from flaskr.models import Event, Entry
+from flaskr.models import Event, Entry, User
 
 #@app.route('/')
 #def show_entries():
@@ -31,7 +31,7 @@ def calendar():
 def event_create():
     day=request.args.get('day')
     room=request.args.get('room')
-    time=int(request.args.get('time'))# + 1
+    time=int(request.args.get('time'))
     if request.method == 'POST':
         event = Event(title=request.form['title'],
                       description=request.form['description'],
@@ -94,7 +94,8 @@ def show_plan():
 
 @app.route('/users/')
 def user_list():
-    return 'list users'
+    users = User.query.all()
+    return render_template('user/list.html', users=users)
 
 @app.route('/users/<int:user_id>/')
 def user_detail(user_id):
@@ -102,12 +103,51 @@ def user_detail(user_id):
 
 @app.route('/users/<int:user_id>/edit/', methods=['GET', 'POST'])
 def user_edit(user_id):
-    return 'edit user ' + str(user_id)
+    user = User.query.get(user_id)
+    if user is None:
+        abort(404)
+    if request.method == 'POST':
+        user.name=request.form['name']
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('user_detail', user_id=user_id))
+    return render_template('user/edit.html', user=user)
 
 @app.route('/users/create/', methods=['GET', 'POST'])
 def user_create():
-    return 'create a new user'
+    if request.method == 'POST':
+        user = User(name=request.form['name'])
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('user_list'))
+    return render_template('user/edit.html')
 
 @app.route('/users/<int:user_id>/delete/', methods=['DELETE'])
 def user_delete(user_id):
-    return NotImplementedError('DELETE')
+    user = User.query.get(user_id)
+    if user is None:
+        response = jsonify({'status': 'Not Found'})
+        response.status_code = 404
+        return response
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({'status': 'OK'})
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        user = User.authenticate(db.session.query,
+                request.form['name'])
+        if user != None:
+            session['user_id'] = user.id
+            flash('You were logged in')
+            return redirect(url_for('calendar'))
+        else:
+            flash('Invalid your name')
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    flash('You were logged out')
+    return redirect(url_for('login'))
