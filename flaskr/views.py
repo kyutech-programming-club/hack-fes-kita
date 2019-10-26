@@ -19,7 +19,13 @@ from flaskr.models import Event, Entry
 #    return redirect(url_for('show_entries'))
 
 
-
+@app.route('/')
+def calendar():
+    empty_rooms = data.get_empty_rooms()
+    for day, schedule in empty_rooms.items():
+        for time in range(len(schedule)):
+            empty_rooms[day][time] = len(schedule[time])
+    return render_template('calendar.html', data=empty_rooms)
 
 @app.route('/events/create/', methods=['GET', 'POST'])
 def event_create():
@@ -70,15 +76,6 @@ def event_delete(event_id):
     db.session.delete(event)
     db.session.commit()
     return jsonify({'status': 'OK'})
-
-
-@app.route('/calendar')
-def calendar():
-    empty_rooms = data.get_empty_rooms()
-    for day, schedule in empty_rooms.items():
-        for time in range(len(schedule)):
-            empty_rooms[day][time] = len(schedule[time])
-    return render_template('calendar.html', data=empty_rooms)
 
 @app.route("/plan")
 def show_plan():

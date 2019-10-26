@@ -10,7 +10,7 @@
   {% for empty_room in empty_rooms %}
   <tr>
   <td>{{empty_room}}</td>
-  <td>empty</td>
+  <td><a href="{{url_for('event_create')}}">empty</a></td>
   </tr>
   {% endfor %}
   
