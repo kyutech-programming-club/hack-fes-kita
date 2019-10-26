@@ -1,11 +1,14 @@
 import pandas as pd
 import copy
 
+from flaskr.models import Event
+
 class RoomData(object):
     def __init__(self, csv_path):
         data = pd.read_csv(csv_path)
         self.all_rooms = self.get_all_rooms(data)
         self.class_rooms = self.get_class_rooms(data)
+        self.event_rooms = self.get_event_rooms()
 
     def get_all_rooms(self, data):
         rooms = []
@@ -28,6 +31,21 @@ class RoomData(object):
             day, time, room = row[0], row[1]-1, row[2]
             result_data[day][time].append(room)
         
+        return result_data
+
+    def get_event_rooms(self):
+        init_value = [[] for i in range(5)]
+        result_data = {
+            'Mon': copy.deepcopy(init_value),
+            'Tue': copy.deepcopy(init_value),
+            'Wed': copy.deepcopy(init_value),
+            'Thu': copy.deepcopy(init_value),
+            'Fri': copy.deepcopy(init_value)}
+        events = Event.query.all()
+        print("Events", events)
+        for event in events:
+            result_data[event.day][int(event.time)].append(event)
+            print(result_data)
         return result_data
 
     def get_empty_rooms(self):
