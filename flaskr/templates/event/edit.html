@@ -9,11 +9,11 @@
       <dt>Description:
       <dd><input type=text size=20 name=description value="{{ event.description if event }}">
       <dt>Day:
-      <dd><input type=text size=20 name=day value="{{ event.day if event }}">
+      <dd><input type=text size=20 name=day value="{{day}}" readonly>
       <dt>Room:
-      <dd><input type=text size=20 name=room value="{{ event.room if event }}">
+      <dd><input type=text size=20 name=room value="{{room}}" readonly>
       <dt>Time:
-      <dd><input type=text size=20 name=time value="{{ event.time if event }}">
+      <dd><input type=text size=20 name=time value="{{time}}"readonly>
       <dd><input type=submit value={{ 'save' if event else 'create' }}>
     </dl>
   </form>

@@ -29,16 +29,20 @@ def calendar():
 
 @app.route('/events/create/', methods=['GET', 'POST'])
 def event_create():
+    day=request.args.get('day')
+    room=request.args.get('room')
+    time=int(request.args.get('time'))
     if request.method == 'POST':
         event = Event(title=request.form['title'],
-                    description=request.form['description'],
-                    day=request.form['day'],
-                    room=request.form['room'],
-                    time=request.form['time'])
+                      description=request.form['description'],
+                      day=day,
+                      room=room,
+                      time=time
+        )
         db.session.add(event)
         db.session.commit()
         return redirect(url_for('event_list'))
-    return render_template('event/edit.html')
+    return render_template('event/edit.html', day=day, room=room, time=time)
 
 @app.route('/events/')
 def event_list():
@@ -81,8 +85,7 @@ def event_delete(event_id):
 def show_plan():
     day, time = request.args.get('day'), int(request.args.get('time'))
     empty_rooms = data.get_empty_rooms()
-    print("empty_rooms: ", empty_rooms)
     empty_rooms = empty_rooms[day][time]
     events = data.get_event_rooms()
     events = events[day][time]
-    return render_template('plan.html', empty_rooms=empty_rooms, events=events)
+    return render_template('plan.html', empty_rooms=empty_rooms, events=events, rooms=rooms, day=day, time=time)
