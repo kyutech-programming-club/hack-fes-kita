@@ -7,5 +7,5 @@ app.config.from_object('flaskr.config')
 db = SQLAlchemy(app)
 
 import flaskr.views
-
+import flaskr.read_csv
 

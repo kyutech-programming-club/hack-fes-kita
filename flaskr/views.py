@@ -68,11 +68,5 @@ def user_delete(user_id):
 
 @app.route('/calendar')
 def calendar():
-    data = {"月": [2, 2, 2, 2, 2],
-            "火": [3, 6, 7, 9, 12],
-            "水": [9, 6, 1, 2, 4],
-            "木": [4, 8, 2, 5, 10],
-            "金": [1, 5, 4, 2, 3],            
-    }
-    return render_template('calendar.html', data=data
-)
+    data = get_empty_room_num("./occupied_room.csv")
+    return render_template('calendar.html', data=data)
