@@ -149,8 +149,11 @@ def select_candidates():
     candidates = similar_word(purpose)
     print("candidates: ", candidates)
     categories = []
-    for category_name in candidates:
-        category = Category.query.filter(Category.name == category_name).first()
+    for name in candidates:
+        name = name[1:]  if name[0]  == '[' else name
+        name = name[:-1] if name[-1] == ']' else name
+        print(name)
+        category = Category.query.filter(Category.name == name).first()
         if category != None:
             categories.append(category)
     return render_template('user/edit.html', name=name, categories=categories)
