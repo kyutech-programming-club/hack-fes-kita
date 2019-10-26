@@ -44,7 +44,6 @@ class RoomData(object):
         events = Event.query.all()
         for event in events:
             result_data[event.day][int(event.time)].append(event)
-            print(result_data)
         return result_data
 
     def get_empty_rooms(self):
@@ -73,5 +72,3 @@ if __name__ == '__main__':
     import sys
     path = sys.argv[1]
     data = RoomData(path)
-    print(data.all_rooms)
-    print(data.get_empty_rooms())
