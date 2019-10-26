@@ -1,0 +1,33 @@
+<h1>Plan</h1>
+
+<table border="1">
+
+  <tr>
+    <th>empty room</th>
+    <th>status</th>
+  </tr>
+
+  {% for empty_room in empty_rooms %}
+  <tr>
+  <td>{{empty_room}}</td>
+  <td><a href="{{url_for('event_create')}}?day={{day}}&time={{time+1}}&room={{room}}">empty</a></td>
+  </tr>
+  {% endfor %}
+  
+</table>
+
+<table border="1">
+
+  <tr>
+    <th>room</th>
+    <th>status</th>
+  </tr>
+
+  {% for event in events %}
+  <tr>
+  <td>{{event.room}}</td>
+  <td><a href="{{url_for('event_detail', event_id=event.id)}}">{{event.title}}</a></td>
+  </tr>
+  {% endfor %}
+  
+</table>
