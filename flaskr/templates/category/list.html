@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <h2>Categories</h2> 
+
+  <ul>
+  {% for category in categories %}
+  <li>{{ category.name}}</li>
+  {% else %}
+  <li><em>Unbelievable.  No Categories here so far</em></li>
+  {% endfor %}
+  </ul>
+
+  <a href="{{ url_for('category_create') }}">create category</a>
+{% endblock body %}

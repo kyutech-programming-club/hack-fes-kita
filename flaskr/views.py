@@ -238,3 +238,18 @@ def post_delete(post_id):
     db.session.commit()
     return jsonify({'status': 'OK'})
 
+@app.route('/categories/')
+def category_list():
+    categories = Category.query.all()
+    return render_template('category/list.html', categories=categories)
+
+@app.route('/categories/create/', methods=['GET', 'POST'])
+def category_create():
+    if request.method == 'POST':
+        name = request.form["name"]
+        category = Category(name=name)
+        db.session.add(category)
+        db.session.commit()
+        return redirect(url_for('category_list'))
+    categories = Category.query.all()
+    return render_template('category/edit.html', categories=categories)
