@@ -1,4 +1,4 @@
-iifrom sqlalchemy.orm import synonym
+from sqlalchemy.orm import synonym
 from werkzeug import check_password_hash, generate_password_hash
 
 from flaskr import db
