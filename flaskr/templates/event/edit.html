@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <h2>{{ 'Edit Event' if event else 'Add Event'}}</h2>
+  <form action="" method="post">
+    <dl>
+      <dt>Title:
+      <dd><input type=text size=20 name=title value="{{ event.title if event }}">
+      <dt>Description:
+      <dd><input type=text size=20 name=description value="{{ event.description if event }}">
+      <dt>Day:
+      <dd><input type=text size=20 name=day value="{{ event.day if event }}">
+      <dt>Room:
+      <dd><input type=text size=20 name=room value="{{ event.room if event }}">
+      <dt>Time:
+      <dd><input type=text size=20 name=time value="{{ event.time if event }}">
+      <dd><input type=submit value={{ 'save' if event else 'create' }}>
+    </dl>
+  </form>
+{% endblock %}
+
