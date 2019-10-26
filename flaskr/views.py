@@ -91,3 +91,23 @@ def show_plan():
     events = data.get_event_rooms()
     events = events[day][time]
     return render_template('plan.html', empty_rooms=empty_rooms, events=events, room=room, day=day, time=time)
+
+@app.route('/users/')
+def user_list():
+    return 'list users'
+
+@app.route('/users/<int:user_id>/')
+def user_detail(user_id):
+    return 'detail user ' + str(user_id)
+
+@app.route('/users/<int:user_id>/edit/', methods=['GET', 'POST'])
+def user_edit(user_id):
+    return 'edit user ' + str(user_id)
+
+@app.route('/users/create/', methods=['GET', 'POST'])
+def user_create():
+    return 'create a new user'
+
+@app.route('/users/<int:user_id>/delete/', methods=['DELETE'])
+def user_delete(user_id):
+    return NotImplementedError('DELETE')
