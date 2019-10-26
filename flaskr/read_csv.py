@@ -9,8 +9,8 @@ def get_room_num(data):
     return len(set(rooms))
 
 
-def get_empty_room_num():
-    data = pd.read_csv("../data.csv")
+def get_empty_room_num(path):
+    data = pd.read_csv(path)
     num_rooms = get_room_num(data)
     init_value = [num_rooms for i in range(5)]
     result_data = {
@@ -28,5 +28,6 @@ def get_empty_room_num():
     return result_data
 
 if __name__ == '__main__':
-    data = get_empty_room_num()
+    path = "../data.csv"
+    data = get_empty_room_num(path)
     print(data)
