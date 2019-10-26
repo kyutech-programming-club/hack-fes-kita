@@ -37,6 +37,7 @@ def load_user():
         g.user = User.query.get(session['user_id'])
 
 @app.route('/')
+@login_required
 def calendar():
     empty_rooms = data.get_empty_rooms()
     for day, schedule in empty_rooms.items():
@@ -143,7 +144,6 @@ def user_edit(user_id):
     return render_template('user/edit.html', user=user)
 
 @app.route('/users/create/', methods=['GET', 'POST'])
-@login_required
 def user_create():
     if request.method == 'POST':
         user = User(name=request.form['name'])
