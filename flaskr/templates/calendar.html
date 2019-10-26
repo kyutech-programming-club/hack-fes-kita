@@ -12,13 +12,11 @@
         <th>{{ day }}</th>
         {% endfor %}
       </tr>
-      
       {% for i in range(5) %}
       <tr>
         <th>{{ i + 1 }}限</th>
         {% for day in data %}
         <td><a href="{{url_for('show_plan')}}?day={{day}}&time={{i}}">{{ data[day][i] }}</a></td>
-
         {% endfor %}
       </tr>
       {% endfor%}
