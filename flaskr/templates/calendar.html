@@ -17,7 +17,7 @@
       <tr>
         <th>{{ i + 1 }}限</th>
         {% for day in data %}
-        <th><a href={{url_for('show_plan')}}>{{ data[day][i] }}</a></th>
+        <th><a href="{{url_for('show_plan')}}?day={{day}}&time={{i}}">{{ data[day][i] }}</a></th>
         {% endfor %}
       </tr>
       {% endfor%}
