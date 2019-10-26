@@ -79,3 +79,10 @@ def calendar():
         for time in range(len(schedule)):
             empty_rooms[day][time] = len(schedule[time])
     return render_template('calendar.html', data=empty_rooms)
+
+@app.route("/plan")
+def show_plan():
+    day, time = request.args.get('day'), int(request.args.get('time'))
+    empty_rooms = data.get_empty_rooms()
+    rooms = empty_rooms[day][time]
+    return render_template('plan.html', rooms=rooms)
