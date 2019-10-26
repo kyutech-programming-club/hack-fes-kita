@@ -144,7 +144,7 @@ from flaskr.similar import similar_word
 
 @app.route('/select_candidates', methods=['POST'])
 def select_candidates():
-    name = request.form['name']
+    user_name = request.form['name']
     purpose = request.form['purpose']
     candidates = similar_word(purpose)
     print("candidates: ", candidates)
@@ -156,7 +156,7 @@ def select_candidates():
         category = Category.query.filter(Category.name == name).first()
         if category != None:
             categories.append(category)
-    return render_template('user/edit.html', name=name, categories=categories)
+    return render_template('user/edit.html', name=user_name, categories=categories)
     
 
 @app.route('/users/<int:user_id>/delete/', methods=['DELETE'])
