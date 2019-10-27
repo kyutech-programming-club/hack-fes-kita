@@ -1,26 +1,34 @@
+<head>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="page">
 <h1>Plan</h1>
 
+<table class="tab" align="center"><tr>
+
+<td valign="top">
 <table border="1">
 
-  <tr>
-    <th>empty room</th>
-    <th>status</th>
-  </tr>
+  <h2>空き教室</h2>
 
   {% for empty_room in empty_rooms %}
   <tr>
-  <td>{{empty_room}}</td>
-  <td><a href="{{url_for('event_create')}}?day={{day}}&time={{time}}&room={{empty_room}}">empty</a></td>
+  <td class="em_ta" align="center">{{empty_room}}</td>
+  <td class="em_ta" align="center"><a href="{{url_for('event_create')}}?day={{day}}&time={{time}}&room={{empty_room}}">予約</a></td>
   </tr>
   {% endfor %}
   
 </table>
+</td>
 
+<td valign="top">
 <table border="1">
 
+  <h2>イベント</h2>
   <tr>
-    <th>room</th>
-    <th>status</th>
+    <th>教室</th>
+    <th>タイトル</th>
   </tr>
 
   {% for event in events %}
@@ -31,3 +39,8 @@
   {% endfor %}
   
 </table>
+</td>
+
+</tr></table>
+</div>
+</body>

@@ -22,11 +22,12 @@ def load_user():
 @app.route('/')
 @login_required
 def calendar():
+    posts = Post.query.all()
     empty_rooms = data.get_empty_rooms()
     for day, schedule in empty_rooms.items():
         for time in range(len(schedule)):
             empty_rooms[day][time] = len(schedule[time])
-    return render_template('calendar.html', data=empty_rooms)
+    return render_template('calendar.html', data=empty_rooms, posts=posts)
 
 @app.route('/events/create/', methods=['GET', 'POST'])
 def event_create():
@@ -225,7 +226,6 @@ def post_create():
 @app.route('/posts/')
 def post_list():
     posts = Post.query.all()
-    print(posts[0].title)
     return render_template('post/list.html', posts=posts)
 
 @app.route('/posts/<int:post_id>/')
