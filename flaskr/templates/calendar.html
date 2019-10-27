@@ -2,9 +2,17 @@
 <html>
   <head>
     <title>Calrandar</title>
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
   </head>
-  
   <body>
+
+    <form id="calendar">
+      <input type="radio" id="empty"></input>
+      <input type="radio" id="event"></input>      
+    </form>
+      
+
+    {% if event_show %}
     <table border="1">
       <tr>
         <th></th>
@@ -21,6 +29,26 @@
       </tr>
       {% endfor%}
     </table>
+
+    {% else %}
+    <table border="1">
+      <tr>
+        <th></th>
+        {% for day in data %}
+        <th>{{ day }}</th>
+        {% endfor %}
+      </tr>
+      {% for i in range(5) %}
+      <tr>
+        <th>{{ i + 1 }}限</th>
+        {% for day in data %}
+        <td><a href="{{url_for('show_plan')}}?day={{day}}&time={{i}}">{{ data[day][i] }}</a></td>
+        {% endfor %}
+      </tr>
+      {% endfor%}
+    </table>
+    {% endif %}
+
   </body>
   
 </html>
