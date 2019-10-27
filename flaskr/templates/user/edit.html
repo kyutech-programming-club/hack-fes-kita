@@ -1,12 +1,15 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <h2>{{ 'Edit User' if user else 'Add User'}}</h2>
-  <form action="" method="post">
+  <h2>ようこそ，{{ name }}さん</h2>
+  <form action="{{url_for('user_create')}}" method="post">
     <dl>
       <dt>名前:
-      <dd><input type=text size=20 name=name value="{{ user.name if user }}">
-      <dd><input type=text size=20 name=category >
+      <dd><input type=text size=20 name=name value="{{ name }}" readonly>
+    　<dt>Category:
+          {% for category in categories %}
+          <dd><input type=checkbox size=20 name="categories" value="{{ category.name }}">{{ category.name }}</dd>
+          {% endfor %}
       <dd><input type=submit value={{ 'save' if user else 'create' }}>
     </dl>
   </form>
