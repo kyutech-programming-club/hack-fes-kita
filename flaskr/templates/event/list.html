@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <h2>Events</h2> 
+
+  <ul>
+  {% for event in events %}
+  <li><a href="{{ url_for('event_detail', event_id=event.id) }}">{{ event.title }}</a></li>
+  {% else %}
+  <li><em>Unbelievable.  No events here so far</em></li>
+  {% endfor %}
+  </ul>
+
+  <a href="{{ url_for('calendar') }}">return calendar</a>
+{% endblock body %}

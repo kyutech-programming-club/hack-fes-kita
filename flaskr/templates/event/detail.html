@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h2>タイトル：{{ event.title }}</h2>
+<p>
+概要：{{ event.description }}<br>
+曜日：{{ event.day }}<br>
+教室：{{ event.room }}<br>
+時間：{{ event_time }}限目
+</p>
+<div class="cate">
+<h2>categories</h2>
+<ul>
+{% for category in event.categories %}
+<li>{{category.name}}</li>
+{% endfor %}
+</ul>
+</div>
+{% if not joined  %}
+<a href="{{ url_for('join_event', event_id=event.id) }}"><span style="background-color:#ff0000">参加する</span></a>
+{% else %}
+<p class="add">参加済み</p>
+{% endif %}
+<h2>member</h2>
+<ul>
+{% for user in event.users %}
+<li>{{user.name}}</li>
+{% endfor %}
+</ul>
+<a class="event-delete-link" href="#" data-delete-url="{{ url_for('event_delete', event_id=event.id) }}">delete</a>
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script>
+  $(function() {
+    $(".event-delete-link").on("click", function() {
+      var delete_url = $(this).attr('data-delete-url');
+      $.ajax({
+        url: delete_url,
+        type: 'DELETE',
+        success: function(response) {
+          if (response.status == 'OK') {
+            window.location = '{{ url_for('event_list') }}';
+          } else {
+            alert('Delete failed.')
+          }
+        }
+      });
+      return false;
+    });
+  });
+</script>
+
+{% endblock body %}
+

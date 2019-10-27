@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <h2>{{ 'Edit Event' if event else 'Add Event'}}</h2>
+  <form action="" method="post">
+    <dl>
+      <dt>タイトル:
+      <dd><input type=text size=20 name=title value="{{ event.title if event }}">
+      <dt>概要:
+      <dd><textarea rows=20 cols=20 name=description value="{{ event.description if event }}"></textarea>
+      <dt>曜日:
+      <dd><input type=text size=20 name=day value="{{day}}" readonly>
+      <dt>教室:
+      <dd><input type=text size=20 name=room value="{{room}}" readonly>
+      <dt>時間:
+      <dd><input type=text size=20 name=time value="{{time+1}}" readonly>
+      <dt>カテゴリー:
+      <dd><input type=text size=20 name="category" >
+      <dd><input type=submit value={{ 'save' if event else '予約' }}>
+    </dl>
+  </form>
+{% endblock %}
+
