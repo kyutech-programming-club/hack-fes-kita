@@ -22,11 +22,12 @@ def load_user():
 @app.route('/')
 @login_required
 def calendar():
+    posts = Post.query.all()
     empty_rooms = data.get_empty_rooms()
     for day, schedule in empty_rooms.items():
         for time in range(len(schedule)):
             empty_rooms[day][time] = len(schedule[time])
-    return render_template('calendar.html', data=empty_rooms)
+    return render_template('calendar.html', data=empty_rooms, posts=posts)
 
 @app.route('/events/create/', methods=['GET', 'POST'])
 def event_create():
