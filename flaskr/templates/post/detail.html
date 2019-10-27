@@ -2,9 +2,9 @@
 
 {% block body %}
 <h2>{{ post.title }}</h2>
-<h2>categories</h2>
+<h3>カテゴリー</h3>
 {% for category in post.categories %}
-<h3>{{category.name}}</h2>
+<h4>{{category.name}}</h4>
 {% endfor %}
 
 <div>

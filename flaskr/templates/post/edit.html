@@ -4,11 +4,11 @@
   <h2>{{ 'Edit Post' if post else 'Add Post'}}</h2>
   <form action="" method="post">
     <dl>
-      <dt>Title:
+      <dt>タイトル:
       <dd><input type=text size=20 name=title value="{{ post.title if post }}">
-      <dt>Body:
+      <dt>本文:
       <dd><input type=text size=20 name=body value="{{ post.body if post }}">
-    　<dt>Category:
+    　<dt>カテゴリー:
           {% for category in categories %}
           <dd><input type=checkbox size=20 name="categories" value="{{ category.name }}">{{ category.name }}</dd>
           {% endfor %}

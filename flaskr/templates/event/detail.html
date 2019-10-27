@@ -8,15 +8,15 @@
 <h2>{{ event_time }}</h2>
 <h2>categories</h2>
 {% for category in event.categories %}
-<h3>{{category.name}}</h3>
+<h4>{{category.name}}</h4>
 {% endfor %}
-Joined ? {{ joined }}<br>
-<a href="{{ url_for('join_event', event_id=event.id) }}">join</a>
+{% if not joined  %}
+<a href="{{ url_for('join_event', event_id=event.id) }}">参加する</a>
+{% else %}
+<p>参加済み</p>
+{% endif %}
 <div>
-  <ul>
-    <li><a href="{{ url_for('event_edit', event_id=event.id) }}">edit</a></li>
-    <li><a class="event-delete-link" href="#" data-delete-url="{{ url_for('event_delete', event_id=event.id) }}">delete</a></li>
-  </ul>
+<a class="event-delete-link" href="#" data-delete-url="{{ url_for('event_delete', event_id=event.id) }}">delete</a>
 </div>
 <h2>member</h2>
 {% for user in event.users %}

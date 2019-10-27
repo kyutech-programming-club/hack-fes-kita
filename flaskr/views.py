@@ -205,7 +205,6 @@ def post_create():
 @app.route('/posts/')
 def post_list():
     posts = Post.query.all()
-    print(posts[0].title)
     return render_template('post/list.html', posts=posts)
 
 @app.route('/posts/<int:post_id>/')
