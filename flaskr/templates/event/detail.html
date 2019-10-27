@@ -1,27 +1,33 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<h2>{{ event.title }}</h2>
-<h2>{{ event.description }}</h2>
-<h2>{{ event.day }}</h2>
-<h2>{{ event.room }}</h2>
-<h2>{{ event_time }}</h2>
+<h2>タイトル：{{ event.title }}</h2>
+<p>
+概要：{{ event.description }}<br>
+曜日：{{ event.day }}<br>
+教室：{{ event.room }}<br>
+時間：{{ event_time }}限目
+</p>
+<div class="cate">
 <h2>categories</h2>
+<ul>
 {% for category in event.categories %}
-<h4>{{category.name}}</h4>
+<li>{{category.name}}</li>
 {% endfor %}
-{% if not joined  %}
-<a href="{{ url_for('join_event', event_id=event.id) }}">参加する</a>
-{% else %}
-<p>参加済み</p>
-{% endif %}
-<div>
-<a class="event-delete-link" href="#" data-delete-url="{{ url_for('event_delete', event_id=event.id) }}">delete</a>
+</ul>
 </div>
+{% if not joined  %}
+<a href="{{ url_for('join_event', event_id=event.id) }}"><span style="background-color:#ff0000">参加する</span></a>
+{% else %}
+<p class="add">参加済み</p>
+{% endif %}
 <h2>member</h2>
+<ul>
 {% for user in event.users %}
-<h3>{{user.name}}</h3>
+<li>{{user.name}}</li>
 {% endfor %}
+</ul>
+<a class="event-delete-link" href="#" data-delete-url="{{ url_for('event_delete', event_id=event.id) }}">delete</a>
 
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script>

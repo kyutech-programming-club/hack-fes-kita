@@ -7,7 +7,7 @@
       <dt>タイトル:
       <dd><input type=text size=20 name=title value="{{ post.title if post }}">
       <dt>本文:
-      <dd><input type=text size=20 name=body value="{{ post.body if post }}">
+      <dd><textarea rows=6 cols=40 name=body value="{{ post.body if post }}">
     　<dt>カテゴリー:
           {% for category in categories %}
           <dd><input type=checkbox size=20 name="categories" value="{{ category.name }}">{{ category.name }}</dd>

@@ -4,6 +4,7 @@ h1, h2, h3          { font-family: 'Georgia', serif; margin: 0; }
 h1              { border-bottom: 2px solid #7e1083; }
 h2              { font-size: 1.2em; }
 a               { color: black; }
+.add            { color: red; }
 .da_ta          { width: 60px; }
 .fl_ri          { float: rigth; padding-right: 5px;}
 .cate           { border-color: black; border: 2px; }
