@@ -281,3 +281,7 @@ def category_create():
         return redirect(url_for('category_list'))
     categories = Category.query.all()
     return render_template('category/edit.html', categories=categories)
+
+@app.route('/categories/<int:category_id>/', methods=['GET'])
+def category_detail(category_id):
+    return render_template('category/detail.html')
