@@ -3,14 +3,14 @@
 <p>
   <h2>Events</h2>
   {% for event in category.events %}
-  <li>{{event.title}}</li>
+  <li><a href="{{url_for('event_detail', event_id=event.id)}}">{{event.title}}</a></li>
   {% endfor %}
 </p>
 
 <p>
   <h2>Users</h2>
   {% for user in category.users %}
-  <li>{{user.name}}</li>
+  <li><a href="{{url_for('user_detail', user_id=user.id)}}">{{user.name}}</a></li>
   {% endfor %}
 </p>
 
