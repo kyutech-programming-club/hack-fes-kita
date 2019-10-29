@@ -41,12 +41,12 @@
               <th>本文</th>
               <th>カテゴリー</th>
             </tr>
-            {% for post in posts %}
+            {% for event in events %}
             <tr>
-            <td>{{post.title}}</td>
-            <td>{{post.body}}</td>
+            <td>{{event.title}}</td>
+            <td>{{event.description}}</td>
             <td>
-              {% for category in post.categories %}
+              {% for category in event.categories %}
               {{ category.name}}<br>
               {% endfor %}
             </td>
