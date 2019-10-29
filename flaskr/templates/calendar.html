@@ -43,7 +43,7 @@
             </tr>
             {% for event in events %}
             <tr>
-            <td>{{event.title}}</td>
+              <td><a href="{{url_for('event_detail', event_id=event.id)}}">{{event.title}}</a></td>
             <td>{{event.description}}</td>
             <td>
               {% for category in event.categories %}
