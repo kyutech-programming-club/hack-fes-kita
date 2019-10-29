@@ -284,4 +284,5 @@ def category_create():
 
 @app.route('/categories/<int:category_id>/', methods=['GET'])
 def category_detail(category_id):
-    return render_template('category/detail.html')
+    category = Category.query.get(category_id)
+    return render_template('category/detail.html', category=category)

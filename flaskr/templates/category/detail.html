@@ -1,1 +1,16 @@
-<h1>Categori/Detail</h1>
+<h1>{{category.name}}</h1>
+
+<p>
+  <h2>Events</h2>
+  {% for event in category.events %}
+  <li>{{event.title}}</li>
+  {% endfor %}
+</p>
+
+<p>
+  <h2>Users</h2>
+  {% for user in category.users %}
+  <li>{{user.name}}</li>
+  {% endfor %}
+</p>
+
