@@ -24,7 +24,7 @@
 <h2>member</h2>
 <ul>
 {% for user in event.users %}
-<li>{{user.name}}</li>
+<li><a href="{{ url_for('user_detail', user_id=user.id) }}">{{user.name}}</a></li>
 {% endfor %}
 </ul>
 <a class="event-delete-link" href="#" data-delete-url="{{ url_for('event_delete', event_id=event.id) }}">delete</a>
