@@ -2,6 +2,7 @@ from functools import wraps
 from flask import request, redirect, url_for, render_template, flash, abort, jsonify, session, g
 from flaskr import app, db, data
 from flaskr.models import Event, Entry, User, Category, Post
+from sqlalchemy import or_
 
 def login_required(f):
     @wraps(f)
@@ -22,12 +23,17 @@ def load_user():
 @app.route('/')
 @login_required
 def calendar():
-    events = Event.query.all()
+    current_user = User.query.get(session.get('user_id'))
+    target_events = []
+    for target_category in current_user.categories:
+        target_events += [event for event in Event.query.all() if target_category in event.categories]
+    target_events = list(set(target_events))
+
     empty_rooms = data.get_empty_rooms()
     for day, schedule in empty_rooms.items():
         for time in range(len(schedule)):
             empty_rooms[day][time] = len(schedule[time])
-    return render_template('calendar.html', data=empty_rooms, events=events)
+    return render_template('calendar.html', data=empty_rooms, events=target_events)
 
 @app.route('/events/create/', methods=['GET', 'POST'])
 def event_create():
@@ -159,7 +165,7 @@ def select_candidates():
         if category != None:
             categories.append(category)
     return render_template('user/edit.html', name=user_name, categories=categories)
-    
+
 
 @app.route('/users/<int:user_id>/delete/', methods=['DELETE'])
 def user_delete(user_id):
