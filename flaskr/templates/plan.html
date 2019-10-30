@@ -1,9 +1,8 @@
-<head>
-  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-<div class="page">
-<h1>Plan</h1>
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>Plan</h2>
 
 <table class="tab" align="center"><tr>
 
@@ -42,5 +41,5 @@
 </td>
 
 </tr></table>
-</div>
-</body>
+
+{% endblock %}
