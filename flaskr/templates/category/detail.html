@@ -1,4 +1,8 @@
-<h1>{{category.name}}</h1>
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>カテゴリー：<span style="color: black">{{category.name}}</span></h2>
 
 <p>
   <h2>Events</h2>
@@ -14,3 +18,4 @@
   {% endfor %}
 </p>
 
+{% endblock %}
