@@ -2,6 +2,7 @@ from functools import wraps
 from flask import request, redirect, url_for, render_template, flash, abort, jsonify, session, g
 from flaskr import app, db, data
 from flaskr.models import Event, Entry, User, Category, Post
+from sqlalchemy import or_
 
 def login_required(f):
     @wraps(f)
@@ -22,12 +23,17 @@ def load_user():
 @app.route('/')
 @login_required
 def calendar():
-    posts = Post.query.all()
+    current_user = User.query.get(session.get('user_id'))
+    target_events = []
+    for target_category in current_user.categories:
+        target_events += [event for event in Event.query.all() if target_category in event.categories]
+    target_events = list(set(target_events))
+
     empty_rooms = data.get_empty_rooms()
     for day, schedule in empty_rooms.items():
         for time in range(len(schedule)):
             empty_rooms[day][time] = len(schedule[time])
-    return render_template('calendar.html', data=empty_rooms, posts=posts)
+    return render_template('calendar.html', data=empty_rooms, events=target_events)
 
 @app.route('/events/create/', methods=['GET', 'POST'])
 def event_create():
@@ -35,19 +41,22 @@ def event_create():
     room=request.args.get('room')
     time=int(request.args.get('time'))
     if request.method == 'POST':
-        category = request.form["category"]
-        category = Category.query.filter(Category.name == category).first()
+        category_names = request.form.getlist("categories")
+        print(category_names)
+        categories = [Category.query.filter(Category.name == category_name).first() for category_name in category_names]
         event = Event(title=request.form['title'],
                       description=request.form['description'],
                       day=day,
                       room=room,
                       time=time
         )
-        event.categories.append(category)
+        for category in categories:
+            event.categories.append(category)
         db.session.add(event)
         db.session.commit()
         return redirect(url_for('event_list'))
-    return render_template('event/edit.html', day=day, room=room, time=time)
+    categories = Category.query.all()
+    return render_template('event/edit.html', day=day, room=room, time=time, categories=categories)
 
 @app.route('/events/')
 def event_list():
@@ -141,13 +150,14 @@ def user_create():
         return redirect(url_for('user_list'))
     return render_template('user/new.html')
 
-from flaskr.similar import similar_word
+#  from flaskr.similar import similar_word
 
 @app.route('/select_candidates', methods=['POST'])
 def select_candidates():
     user_name = request.form['name']
     purpose = request.form['purpose']
-    candidates = similar_word(purpose)
+    #  candidates = similar_word(purpose)
+    candidates = ["A", "B", "C"]
     print("candidates: ", candidates)
     categories = []
     for name in candidates:
@@ -158,7 +168,7 @@ def select_candidates():
         if category != None:
             categories.append(category)
     return render_template('user/edit.html', name=user_name, categories=categories)
-    
+
 
 @app.route('/users/<int:user_id>/delete/', methods=['DELETE'])
 def user_delete(user_id):
@@ -274,3 +284,8 @@ def category_create():
         return redirect(url_for('category_list'))
     categories = Category.query.all()
     return render_template('category/edit.html', categories=categories)
+
+@app.route('/categories/<int:category_id>/', methods=['GET'])
+def category_detail(category_id):
+    category = Category.query.get(category_id)
+    return render_template('category/detail.html', category=category)

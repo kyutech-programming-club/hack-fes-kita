@@ -30,23 +30,23 @@
         </td>
         <td valign="top">
           <table>
-          <tr><td>
-              <h3>イベント一覧は<a href="{{url_for('event_list')}}">こちら</a></h3>
-          </td></tr>
+          <!-- <tr><td> -->
+              <!-- <h3>イベント一覧は<a href="{{url_for('event_list')}}">こちら</a></h3> -->
+          <!-- </td></tr> -->
           <tr><td>
           <table border="1">
-            <h3>ポスト</h3>
+            <h3>おすすめのイベント</h3>
             <tr>
               <th>タイトル</th>
               <th>本文</th>
               <th>カテゴリー</th>
             </tr>
-            {% for post in posts %}
+            {% for event in events %}
             <tr>
-            <td>{{post.title}}</td>
-            <td>{{post.body}}</td>
+              <td><a href="{{url_for('event_detail', event_id=event.id)}}">{{event.title}}</a></td>
+            <td>{{event.description}}</td>
             <td>
-              {% for category in post.categories %}
+              {% for category in event.categories %}
               {{ category.name}}<br>
               {% endfor %}
             </td>

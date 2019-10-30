@@ -14,8 +14,10 @@
       <dd><input type=text size=20 name=room value="{{room}}" readonly>
       <dt>時間:
       <dd><input type=text size=20 name=time value="{{time+1}}" readonly>
-      <dt>カテゴリー:
-      <dd><input type=text size=20 name="category" >
+    　<dt>カテゴリー:
+          {% for category in categories %}
+          <dd><input type=checkbox size=20 name="categories" value="{{ category.name }}">{{ category.name }}</dd>
+          {% endfor %}
       <dd><input type=submit value={{ 'save' if event else '予約' }}>
     </dl>
   </form>

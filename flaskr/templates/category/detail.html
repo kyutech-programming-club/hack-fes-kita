@@ -1,0 +1,16 @@
+<h1>{{category.name}}</h1>
+
+<p>
+  <h2>Events</h2>
+  {% for event in category.events %}
+  <li><a href="{{url_for('event_detail', event_id=event.id)}}">{{event.title}}</a></li>
+  {% endfor %}
+</p>
+
+<p>
+  <h2>Users</h2>
+  {% for user in category.users %}
+  <li><a href="{{url_for('user_detail', user_id=user.id)}}">{{user.name}}</a></li>
+  {% endfor %}
+</p>
+
