@@ -10,7 +10,7 @@
     <h1>Home</h1>
     <table class="tab" lign="center"><tr>
         <td valign="top">
-          <table border="1">
+          <table class="tab_bor" border="1">
             <h3>カレンダー</h3>
             <tr>
               <th></th>
@@ -34,8 +34,13 @@
               <!-- <h3>イベント一覧は<a href="{{url_for('event_list')}}">こちら</a></h3> -->
           <!-- </td></tr> -->
           <tr><td>
-          <table border="1">
+          <table class="tab_bor" border="1">
             <h3>おすすめのイベント</h3>
+              <h3>イベント一覧は<a href="{{url_for('event_list')}}">こちら</a></h3>
+          </td></tr>
+          <tr><td>
+          <table class="tab_bor" border="1">
+            <h3>ポスト</h3>
             <tr>
               <th>タイトル</th>
               <th>本文</th>
