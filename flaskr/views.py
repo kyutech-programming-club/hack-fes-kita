@@ -41,15 +41,17 @@ def event_create():
     room=request.args.get('room')
     time=int(request.args.get('time'))
     if request.method == 'POST':
-        category = request.form["category"]
-        category = Category.query.filter(Category.name == category).first()
+        category_names = request.form.getlist("categories")
+        print(category_names)
+        categories = [Category.query.filter(Category.name == category_name).first() for category_name in category_names]
         event = Event(title=request.form['title'],
                       description=request.form['description'],
                       day=day,
                       room=room,
                       time=time
         )
-        event.categories.append(category)
+        for category in categories:
+            event.categories.append(category)
         db.session.add(event)
         db.session.commit()
         return redirect(url_for('event_list'))
