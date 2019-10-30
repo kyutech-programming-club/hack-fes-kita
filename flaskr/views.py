@@ -53,7 +53,8 @@ def event_create():
         db.session.add(event)
         db.session.commit()
         return redirect(url_for('event_list'))
-    return render_template('event/edit.html', day=day, room=room, time=time)
+    categories = Category.query.all()
+    return render_template('event/edit.html', day=day, room=room, time=time, categories=categories)
 
 @app.route('/events/')
 def event_list():
