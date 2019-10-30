@@ -1,16 +1,11 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Calrandar</title>
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-  </head>
+{% extends "layout.html" %}
 
-  <body>
-    <div class="page">
-    <h1>Home</h1>
-    <table class="tab" lign="center"><tr>
+{% block body %}
+
+    <h2>Home</h2>
+    <table class="tab" align="center"><tr>
         <td valign="top">
-          <table border="1">
+          <table class="tab_bor" border="1">
             <h3>カレンダー</h3>
             <tr>
               <th></th>
@@ -27,37 +22,30 @@
             </tr>
             {% endfor%}
           </table>
+          <br><h3>イベント一覧は<a href="{{url_for('event_list')}}">こちら</a></h3>
         </td>
         <td valign="top">
           <table>
+            <h3>おすすめのイベント</h3>
           <tr><td>
-              <h3>イベント一覧は<a href="{{url_for('event_list')}}">こちら</a></h3>
-          </td></tr>
-          <tr><td>
-          <table border="1">
-            <h3>ポスト</h3>
-            <tr>
-              <th>タイトル</th>
-              <th>本文</th>
-              <th>カテゴリー</th>
-            </tr>
-            {% for post in posts %}
-            <tr>
-            <td>{{post.title}}</td>
-            <td>{{post.body}}</td>
-            <td>
-              {% for category in post.categories %}
-              {{ category.name}}<br>
+            <table class="tab_bor" border="1">
+            {% for event in events %}
+              <tr><td>
+              <p>
+              <span style="color:#5eb954">タイトル</span>：<a href="{{url_for('event_detail', event_id=event.id)}}">{{event.title}}</a><br>
+              <span style="color:#5eb954">カテゴリー</span>
+              <ul>
+              {% for category in event.categories %}
+              <li>{{ category.name}}</li>
               {% endfor %}
-            </td>
-            </tr>
+              </ul>
+              </p>
+              </td></tr>
             {% endfor %}
-          </table>
+            </table>
         </td></tr>
         </table>
         </td>
       </tr></table>
-      </div>
-  </body>
 
-</html>
+{% endblock %}

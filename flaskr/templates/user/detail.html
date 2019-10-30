@@ -1,19 +1,17 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<h2>{{ user.name }}</h2>
+<h2>名前：<span style="color: black;">{{ user.name }}</span></h2>
 <div class="cate">
 <h3>カテゴリー</h3>
 <ul>
 {% for category in user.categories %}
-<li>{{category.name}}</li>
+<li><a href="{{url_for('category_detail', category_id=category.id)}}">{{category.name}}</a></li>
 {% endfor %}
 </ul>
 </div>
 
-<a href="{{ url_for('user_edit', user_id=user.id) }}">edit</a>
 <a class="user-delete-link" href="#" data-delete-url="{{ url_for('user_delete', user_id=user.id) }}">delete</a>
-<a href="{{ url_for('calendar') }}">return calendar</a>
 
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script>
